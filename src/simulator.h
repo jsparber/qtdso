@@ -25,7 +25,7 @@
 #include <dso.h>
 #include <stdlib.h>
 
-class Simulator : public QObject, public Dso
+class Simulator : public Dso
 {
   Q_OBJECT
       
@@ -115,7 +115,7 @@ Simulator::noise( int channel ) const
 inline unsigned
 Simulator::clamp( float value ) const
 {
-  return (unsigned)qRound( QMIN( (float)m_maxValue, QMAX( value, 0. ) ) );
+  return (unsigned)qRound( QMIN( (float)m_maxValue, QMAX(value, (float)0. ) ) );
 }
 
 #endif // SIMULATOR_HH

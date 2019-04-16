@@ -3,6 +3,8 @@
 
 #include <qwidget.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 class Dso;
 

@@ -1,6 +1,8 @@
 #include <converterhistogramwid.h>
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <stdlib.h>
 #include <dso.h>
 #include <math.h>
@@ -8,7 +10,7 @@
 ConverterHistogramWid::ConverterHistogramWid( QWidget *parent, const char *name ) :
   QWidget( parent, name )
 {
-  setBackgroundMode( QWidget::NoBackground );
+  setBackgroundMode( Qt::NoBackground );
   
   clearSLOT();
 }

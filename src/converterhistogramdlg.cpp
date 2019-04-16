@@ -1,6 +1,8 @@
 #include <converterhistogramdlg.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QTimerEvent>
 #include <converterhistogramwid.h>
 #include <qstring.h>
 #include <qcombobox.h>

@@ -1,5 +1,5 @@
 TEMPLATE        = app
-CONFIG          = qt thread release warn_on  
+CONFIG          = qt thread debug warn_on
 INCLUDEPATH     = . moc
 MOC_DIR         = moc
 OBJECTS_DIR     = tmp
@@ -29,7 +29,12 @@ contains( CPU_YAPIDE, i686 ) {
         QMAKE_CXXFLAGS += -march=pentiumpro
 }
 
-HEADERS    = dsowid.h \
+HEADERS    =    uimainwid.h \
+    uiabout.h \
+    uisimulatorwid.h \
+    uiprefdlg.h \
+    uiconverterhistogramdlg.h \
+dsowid.h \
              mainwid.h \
              type.h \
              mainwindow.h \
@@ -46,11 +51,13 @@ HEADERS    = dsowid.h \
              simplecfg.h \
              xpm/icon.xpm
 
-INTERFACES = uimainwid.ui \
-             uiabout.ui \
-             uisimulatorwid.ui \
-             uiconverterhistogramdlg.ui \
-             uiprefdlg.ui
+
+#The following line was changed from INTERFACES to FORMS3 by qt3to4
+#FORMS3 = uimainwid.ui \
+#             uiabout.ui \
+#             uisimulatorwid.ui \
+#             uiconverterhistogramdlg.ui \
+#             uiprefdlg.ui
                         
 SOURCES   = main.cpp \
             mainwid.cpp \
@@ -67,10 +74,20 @@ SOURCES   = main.cpp \
             converterhistogramwid.cpp \
             converterhistogramdlg.cpp \
             simplecfg.cpp \
-            dso.cpp
+            dso.cpp \
+    uimainwid.cpp \
+    uiabout.cpp \
+    uisimulatorwid.cpp \
+    uiprefdlg.cpp \
+    uiconverterhistogramdlg.cpp
 
 LIBS      = -lfftw3 -lieee1284 
 TARGET    = qtdso
 VERSION   = 0.3
 DESTDIR   = ../bin
+
+#The following line was inserted by qt3to4
+QT += qt3support
+#The following line was inserted by qt3to4
+#CONFIG += uic3
 

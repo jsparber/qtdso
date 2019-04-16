@@ -22,6 +22,7 @@
 #define DSO_HH
 
 #include <qthread.h>
+#include <qmutex.h>
 
 /** Abstract base class for DSO protocoll
 */

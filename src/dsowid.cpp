@@ -27,7 +27,13 @@
 #include <qimage.h>
 #include <qpainter.h>
 #include <qprinter.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
+//Added by qt3to4:
+#include <QTimerEvent>
+#include <QResizeEvent>
+#include <QMouseEvent>
+#include <Q3PointArray>
+#include <QPaintEvent>
 
 #include <dampedfloat.h>
 #include <dsowid.h>
@@ -142,7 +148,7 @@ DsoWid::DsoWid( QWidget *parent, const char *name ) :
   m_yOff[1] = 80;
   m_yOff[2] = 0;
   
-  setBackgroundMode( QWidget::NoBackground );
+  setBackgroundMode( Qt::NoBackground );
       
   m_fftOut = new float [FFT_SIZE_MAX/2];
   
@@ -683,7 +689,8 @@ DsoWid::paintEvent( QPaintEvent * )
                    colorGroup(), true, 5, 0 );
   p.end();
   paint( &m_buffer );  
-  bitBlt( this, QPoint(0,0), &m_buffer, rect(), Qt::CopyROP );
+  //Qt::CopyROP replaced with 0
+  bitBlt( this, QPoint(0,0), &m_buffer, rect(), 0);
 }
 
 void
@@ -834,16 +841,18 @@ DsoWid::drawDSO( QPainter *p, bool bw )
   
   // small triangles indicating level
   //
-  p->moveTo( m_x0-7, y-2 );
-  p->lineTo( m_x0-2, y );
-  p->lineTo( m_x0-7, y+2 );
-  p->lineTo( m_x0-7, y-2 );
+  QPainterPath path;
+  path.moveTo( m_x0-7, y-2 );
+  path.lineTo( m_x0-2, y );
+  path.lineTo( m_x0-7, y+2 );
+  path.lineTo( m_x0-7, y-2 );
   
   int x = m_x0+WINDOW_X_PIXELS+2;
-  p->moveTo( x, y );
-  p->lineTo( x+5, y-2 );
-  p->lineTo( x+5, y+2 );
-  p->lineTo( x, y );
+  path.moveTo( x, y );
+  path.lineTo( x+5, y-2 );
+  path.lineTo( x+5, y+2 );
+  path.lineTo( x, y );
+  p->drawPath(path);
   
   p->setClipRect( m_x0, m_y0, WINDOW_X_PIXELS, WINDOW_Y_PIXELS );
   
@@ -851,7 +860,7 @@ DsoWid::drawDSO( QPainter *p, bool bw )
   //
   if (m_drawTriggerLine)
   {    
-    p->setPen( QPen( chColor[m_dso->triggerChannel()], 0, QPen::DotLine ));
+    p->setPen( QPen( chColor[m_dso->triggerChannel()], 0, Qt::DotLine ));
     p->drawLine( m_x0, y, m_x0+WINDOW_X_PIXELS, y );
   }
   
@@ -869,10 +878,13 @@ DsoWid::drawDSO( QPainter *p, bool bw )
   
   // small triangle indicating pretrigger prosition
   //
-  p->moveTo( x-2, y );
-  p->lineTo( x+2, y );
-  p->lineTo( x, y-5 );
-  p->lineTo( x-2, y );
+  QPainterPath path2;
+  path2.moveTo( x-2, y );
+  path2.lineTo( x+2, y );
+  path2.lineTo( x, y-5 );
+  path2.lineTo( x-2, y );
+
+  p->drawPath(path);
     
   // draw position line if slider is down
   //
@@ -880,11 +892,11 @@ DsoWid::drawDSO( QPainter *p, bool bw )
   {
     if (!bw)
     {
-      p->setPen( QPen( chColor[m_dso->triggerChannel()], 0, QPen::DotLine ));
+      p->setPen( QPen( chColor[m_dso->triggerChannel()], 0, Qt::DotLine ));
     }
     else
     {
-      p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+      p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
     }
     
     p->drawLine( x, m_y0+5, x, m_y0+WINDOW_Y_PIXELS-5 );
@@ -1084,12 +1096,12 @@ DsoWid::drawTimeMarker( QPainter *p, bool bw )
   
   if (!bw)
   {
-    p->setPen( QPen( timeColor, 0, QPen::DotLine ));
+    p->setPen( QPen( timeColor, 0, Qt::DotLine ));
     //p->setRasterOp( XorROP );
   }
   else
   {
-    p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+    p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
   }
     
   p->drawLine( m_x0+m_timeMarker[0], m_y0, m_x0+m_timeMarker[0], m_y0+WINDOW_Y_PIXELS );
@@ -1098,8 +1110,8 @@ DsoWid::drawTimeMarker( QPainter *p, bool bw )
     p->drawLine( m_x0+m_timeMarker[1], m_y0, m_x0+m_timeMarker[1], m_y0+WINDOW_Y_PIXELS );
   }
   p->drawLine( m_x0+m_timeMarker[2], m_y0, m_x0+m_timeMarker[2], m_y0+WINDOW_Y_PIXELS );
-  
-  p->setRasterOp( CopyROP );
+  // Replaced p->setRasterOp( Qt:CopyROP);
+  p->setCompositionMode(QPainter::CompositionMode_SourceOver);
   
   float diff[3];
   diff[0] = fabs( m_timeMarker[0]-m_timeMarker[1] );
@@ -1233,11 +1245,11 @@ DsoWid::drawFreqMarker( QPainter *p, bool bw )
     
   if (!bw)
   {
-    p->setPen( QPen( timeColor, 0, QPen::DotLine ));
+    p->setPen( QPen( timeColor, 0, Qt::DotLine ));
   }
   else
   {
-    p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+    p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
   }
     
   p->drawLine( m_x0+m_freqMarker, m_y0, m_x0+m_freqMarker, m_y0+WINDOW_Y_PIXELS );
@@ -1270,11 +1282,11 @@ DsoWid::drawAmplitudeMarker( QPainter *p, bool bw )
   
   if (!bw)
   {
-    p->setPen( QPen( chColor[channel], 0, QPen::DotLine ));
+    p->setPen( QPen( chColor[channel], 0, Qt::DotLine ));
   }
   else
   {
-    p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+    p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
   }
   p->drawLine( m_x0, m_y0+m_amplitudeMarker[0], m_x0+WINDOW_X_PIXELS, m_y0+m_amplitudeMarker[0] );
   p->drawLine( m_x0, m_y0+m_amplitudeMarker[1], m_x0+WINDOW_X_PIXELS, m_y0+m_amplitudeMarker[1] );
@@ -1300,22 +1312,22 @@ DsoWid::drawDbMarker( QPainter *p, bool bw )
   {
     if (!bw)
     {
-      p->setPen( QPen( chColor[0], 0, QPen::DotLine ));
+      p->setPen( QPen( chColor[0], 0, Qt::DotLine ));
     }
     else
     {
-      p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+      p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
     }
   }
   else
   {
     if (!bw)
     {
-      p->setPen( QPen( chColor[1], 0, QPen::DotLine ));
+      p->setPen( QPen( chColor[1], 0, Qt::DotLine ));
     }
     else
     {
-      p->setPen( QPen( Qt::black, 1, QPen::DotLine ));
+      p->setPen( QPen( Qt::black, 1, Qt::DotLine ));
     }
   }
   
@@ -1406,11 +1418,11 @@ DsoWid::drawGrid( QPainter *p, bool bw )
         
   if (!bw)
   {
-    p->setPen( QPen( gridColor, 0, QPen::DotLine ) );
+    p->setPen( QPen( gridColor, 0, Qt::DotLine ) );
   }
   else
   {
-    p->setPen( QPen( Qt::black, 0, QPen::DotLine ) );
+    p->setPen( QPen( Qt::black, 0, Qt::DotLine ) );
   }
   
   p->drawLine( m_x0, m_y0+yCenter-80, 
@@ -1658,7 +1670,7 @@ DsoWid::drawEnvelope( QPainter *p, int channel, bool bw )
       int xOff = lrintf( (float)m_xOff / 5. * (float)(-m_dso->step()) + 
                  1024. + 204.8 * (float)m_dso->step() );
     
-      QPointArray env( 2*m_dso->numSamples() );
+      Q3PointArray env( 2*m_dso->numSamples() );
       int numPoints = 0;
       
       for (int i=0; i<WINDOW_X_PIXELS; ++i)
@@ -2036,7 +2048,7 @@ DsoWid::mouseMoveEvent( QMouseEvent *ev )
   int x = ev->x()-m_x0;
   int y = ev->y()-m_y0;
   
-  if (m_mouseButton == LeftButton)
+  if (m_mouseButton == Qt::LeftButton)
   {
     int dx = 0;
     int dy = 0;
@@ -2131,7 +2143,7 @@ DsoWid::mousePressEvent( QMouseEvent *ev )
   
   m_mouseButton = ev->button();
   
-  if (m_mouseButton == LeftButton)
+  if (m_mouseButton == Qt::LeftButton)
   {
     m_moving = None;
 
@@ -2179,7 +2191,7 @@ DsoWid::mousePressEvent( QMouseEvent *ev )
 void
 DsoWid::mouseReleaseEvent( QMouseEvent */*ev*/ )
 {
-  m_mouseButton = NoButton;
+  m_mouseButton = Qt::NoButton;
 }
 
 void
@@ -3096,7 +3108,7 @@ DsoWid::floatValueString( float value, ValueType type, int prec )
     int cnt=0;
     bool separator=false;
     
-    for (unsigned i=0; i<retString.length(); ++i)
+    for (int i=0; i < retString.length(); ++i)
     {
       if (cnt >= prec && separator)
       {
@@ -3258,9 +3270,9 @@ DsoWid::init()
   m_data[1] = new int [m_dso->numSamples()];
   m_data[2] = new int [m_dso->numSamples()];  // this buffer is used for math
   
-  m_arr = new QPointArray( 5*WINDOW_X_PIXELS );
-  m_arr2 = new QPointArray( m_dso->numSamples() );
-  m_arr3 = new QPointArray( FFT_SIZE_MAX );
+  m_arr = new Q3PointArray( 5*WINDOW_X_PIXELS );
+  m_arr2 = new Q3PointArray( m_dso->numSamples() );
+  m_arr3 = new Q3PointArray( FFT_SIZE_MAX );
 }
 
 void

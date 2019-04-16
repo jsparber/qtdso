@@ -2,6 +2,8 @@
 #define CONVERTERHISTOGRAMDLG_HH
 
 #include <uiconverterhistogramdlg.h>
+//Added by qt3to4:
+#include <QTimerEvent>
 
 class Dso;
 

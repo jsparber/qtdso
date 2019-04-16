@@ -21,18 +21,23 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <Q3PopupMenu>
+#include <Q3Action>
+#include <uimainwid.h>
 
 class MainWid;
 class QAction;
-class QPopupMenu;
+class Q3PopupMenu;
 class UIAbout;
 class PrefDlg;
 class DsoVuMeter;
 class QLabel;
 class DampedFloat;
 
-class MainWindow : public QMainWindow
+class MainWindow : public Q3MainWindow
 {
   Q_OBJECT
 public:
@@ -69,60 +74,60 @@ protected:
   PrefDlg     *m_prefDlg;
   DampedFloat *m_fps;
   
-  QAction *m_exportPngAction;
-  QAction *m_exportEpsAction;
-  QAction *m_exportDataAction;
-  QAction *m_importDataAction;
-  QAction *m_printAction;
-  QAction *m_preferencesAction;
-  QAction *m_quitAction;
+  Q3Action *m_exportPngAction;
+  Q3Action*m_exportEpsAction;
+  Q3Action*m_exportDataAction;
+  Q3Action*m_importDataAction;
+  Q3Action*m_printAction;
+  Q3Action*m_preferencesAction;
+  Q3Action*m_quitAction;
   
-  QAction *m_dsoModeAction;
-  QAction *m_xyModeAction;
-  QAction *m_fftModeAction;
+  Q3Action*m_dsoModeAction;
+  Q3Action*m_xyModeAction;
+  Q3Action*m_fftModeAction;
   
-  QAction *m_continuousAction;
-  QAction *m_singleShotAction;
+  Q3Action*m_continuousAction;
+  Q3Action*m_singleShotAction;
   
-  QAction *m_triggerOffAction;
-  QAction *m_triggerCh1Action;
-  QAction *m_triggerCh2Action;  
-  QAction *m_triggerRaisingAction;
-  QAction *m_triggerFallingAction;
+  Q3Action*m_triggerOffAction;
+  Q3Action*m_triggerCh1Action;
+  Q3Action*m_triggerCh2Action;
+  Q3Action*m_triggerRaisingAction;
+  Q3Action*m_triggerFallingAction;
   
-  QAction *m_dotsAction;  
-  QAction *m_linearAction;
-  QAction *m_linearAvAction;
-  QAction *m_sinxAction;
+  Q3Action*m_dotsAction;
+  Q3Action*m_linearAction;
+  Q3Action*m_linearAvAction;
+  Q3Action*m_sinxAction;
 
-  QAction *m_showCh1Action;  
-  QAction *m_showCh2Action;
+  Q3Action*m_showCh1Action;
+  Q3Action*m_showCh2Action;
   
-  QAction *m_voltsCh1Action[9];
-  QAction *m_voltsCh2Action[9];
+  Q3Action*m_voltsCh1Action[9];
+  Q3Action*m_voltsCh2Action[9];
   
-  QAction *m_timebaseAction[19];
-  QAction *m_fftFreqAction[14];
+  Q3Action*m_timebaseAction[19];
+  Q3Action*m_fftFreqAction[14];
 
-  QAction *m_rmsAction;  
-  QAction *m_frequencyAction;  
+  Q3Action*m_rmsAction;
+  Q3Action*m_frequencyAction;
   
-  QAction *m_timeMarkerAction;  
-  QAction *m_freqMarkerAction;
-  QAction *m_amplitudeMarkerAction;
+  Q3Action*m_timeMarkerAction;
+  Q3Action*m_freqMarkerAction;
+  Q3Action*m_amplitudeMarkerAction;
   
-  QAction *m_dcOffsetAction;
-  QAction *m_histogrammAction;
+  Q3Action*m_dcOffsetAction;
+  Q3Action*m_histogrammAction;
   
-  QAction *m_whatsThisAction;
-  QAction *m_copyrightAction;
+  Q3Action*m_whatsThisAction;
+  Q3Action*m_copyrightAction;
   
-  QPopupMenu *m_ch1Popup;
-  QPopupMenu *m_ch2Popup;
-  QPopupMenu *m_fftPopup;
-  QPopupMenu *m_timebasePopup;
-  QPopupMenu *m_displayPopup;
-  QPopupMenu *m_frameRatePopup;
+  Q3PopupMenu *m_ch1Popup;
+  Q3PopupMenu *m_ch2Popup;
+  Q3PopupMenu *m_fftPopup;
+  Q3PopupMenu *m_timebasePopup;
+  Q3PopupMenu *m_displayPopup;
+  Q3PopupMenu *m_frameRatePopup;
   
   QLabel     *m_statusLabel;
   QLabel     *m_samplingRateLabel;

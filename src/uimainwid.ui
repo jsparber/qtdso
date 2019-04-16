@@ -590,9 +590,6 @@ Less data is fetched from the DSO hardware. This increases the screen update rat
                                     <property name="name">
                                         <cstring>ui_fftWindow</cstring>
                                     </property>
-                                    <property name="sizeLimit">
-                                        <number>11</number>
-                                    </property>
                                     <property name="whatsThis" stdset="0">
                                         <string>Selects the taper window for the FFT. This reduces the discontinuities at the edges of the sample interval. Most common window types are included. Select the window with the smallest spectral leakage (try and error).&lt;p&gt;
 &lt;b&gt;Note:&lt;/b&gt; The taper windows in QtDSO are weighted to compensate the magnitude loss (weighted with 1/constant part of the window function).

@@ -21,7 +21,7 @@
 #include <simulatorwid.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcheckbox.h>
 #include <qslider.h>
 

@@ -21,15 +21,16 @@
 #include <qaction.h>
 #include <qdir.h>
 #include <qfile.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+#include <q3action.h>
 #include <qlabel.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qprinter.h>
 #include <qstatusbar.h>
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 #include <qapplication.h>
 
 #include <uiabout.h>
@@ -43,15 +44,15 @@
 #include "xpm/icon.xpm"
 
 MainWindow::MainWindow( QWidget *parent, const char *name ) :
-  QMainWindow( parent, name ),
-  m_about( 0 ),
+  Q3MainWindow( parent, name ),
+  m_about( nullptr ),
   m_waitingTrigger( false )
 {
   setIcon( QPixmap( (const char **)icon_xpm ) );
   setCaption( "QtDSO 0.3.1 (c) 2002-2007 M. Toussaint" );
   
   m_prefDlg = new PrefDlg( this );
-  m_prefDlg->setIcon( *icon() );
+  //m_prefDlg->setIcon( *icon() );
   connect( m_prefDlg, SIGNAL( applyPrefs() ),
            this, SLOT( applyPrefsSLOT() ));
   
@@ -102,36 +103,36 @@ MainWindow::~MainWindow()
 void
 MainWindow::createActions()
 {
-  m_exportPngAction = new QAction( tr("Export color PNG image"),
+  m_exportPngAction = new Q3Action( tr("Export color PNG image"),
                                    tr("Export PNG..."), 0, this );
   connect( m_exportPngAction, SIGNAL( activated() ),
            this, SLOT( exportPngSLOT() ));
   
-  m_exportEpsAction = new QAction( tr("Export EPS file"),
+  m_exportEpsAction = new Q3Action( tr("Export EPS file"),
                                    tr("Export EPS..."), 0, this );
-  m_exportDataAction = new QAction( tr("Export sample data as ASCII"),
+  m_exportDataAction = new Q3Action( tr("Export sample data as ASCII"),
                                     tr("Export Data..."), 0, this );
-  m_importDataAction = new QAction( tr("Import sample data as ASCII"),
+  m_importDataAction = new Q3Action( tr("Import sample data as ASCII"),
                                     tr("Import Data..."), 0, this );
-  m_printAction = new QAction( tr("Print"),
+  m_printAction = new Q3Action( tr("Print"),
                                tr("Print..."), 0, this );
   connect( m_printAction, SIGNAL( activated() ),
            this, SLOT( printSLOT() ));
   
-  m_preferencesAction = new QAction( tr("Open preferences dialog."),
+  m_preferencesAction = new Q3Action( tr("Open preferences dialog."),
                                tr("Preferences..."), 0, this );
   connect( m_preferencesAction, SIGNAL( activated() ),
            m_prefDlg, SLOT( show() ));
-  m_quitAction = new QAction( tr("Quit program"),
-                              tr("Quit"), CTRL+Key_Q, this );
+  m_quitAction = new Q3Action( tr("Quit program"),
+                              tr("Quit"), Qt::CTRL+Qt::Key_Q, this );
   connect( m_quitAction, SIGNAL( activated() ),
            qApp, SLOT( quit() ));
   
-  m_dsoModeAction = new QAction( tr("Switch to DSO mode"),
+  m_dsoModeAction = new Q3Action( tr("Switch to DSO mode"),
                                  tr("DSO"), 0, this );
-  m_xyModeAction = new QAction( tr("Switch to XY mode"),
+  m_xyModeAction = new Q3Action( tr("Switch to XY mode"),
                                 tr("XY"), 0, this );
-  m_fftModeAction = new QAction( tr("Switch to FFT mode"),
+  m_fftModeAction = new Q3Action( tr("Switch to FFT mode"),
                                  tr("FFT"), 0, this );
   m_dsoModeAction->setToggleAction( true );
   m_xyModeAction->setToggleAction( true );
@@ -143,10 +144,10 @@ MainWindow::createActions()
   connect( m_fftModeAction, SIGNAL( activated() ),
            this, SLOT( modeSLOT() ));
   
-  m_continuousAction = new QAction( tr("Continuous data sampling (Switch off by"
+  m_continuousAction = new Q3Action( tr("Continuous data sampling (Switch off by"
                                        " going to Single Shot mode)"),
                                     tr("Continuous sampling"), 0, this );  
-  m_singleShotAction = new QAction( tr("Select for single shot data sampling"),
+  m_singleShotAction = new Q3Action( tr("Select for single shot data sampling"),
                                     tr("Single Shot"), 0, this );
   m_continuousAction->setToggleAction( true );
   connect( m_continuousAction, SIGNAL( activated() ),
@@ -154,15 +155,15 @@ MainWindow::createActions()
   connect( m_singleShotAction, SIGNAL( activated() ),
            this, SLOT( sampleModeSLOT() ));
   
-  m_triggerOffAction = new QAction( tr("Switch triggering on/off"),
+  m_triggerOffAction = new Q3Action( tr("Switch triggering on/off"),
                                     tr("On"), 0, this );
-  m_triggerCh1Action = new QAction( tr("Trigger on channel 1"),
+  m_triggerCh1Action = new Q3Action( tr("Trigger on channel 1"),
                                     tr("CH1"), 0, this );
-  m_triggerCh2Action = new QAction( tr("Trigger on channel 2"),
+  m_triggerCh2Action = new Q3Action( tr("Trigger on channel 2"),
                                     tr("CH2"), 0, this );
-  m_triggerRaisingAction = new QAction( tr("Trigger on raising edge"),
+  m_triggerRaisingAction = new Q3Action( tr("Trigger on raising edge"),
                                         tr("Raising edge"), 0, this );
-  m_triggerFallingAction = new QAction( tr("Trigger on falling edge"),
+  m_triggerFallingAction = new Q3Action( tr("Trigger on falling edge"),
                                         tr("Falling edge"), 0, this );
   m_triggerOffAction->setToggleAction( true );
   m_triggerCh1Action->setToggleAction( true );
@@ -180,20 +181,20 @@ MainWindow::createActions()
   connect( m_triggerFallingAction, SIGNAL( activated() ),
            this, SLOT( triggerEdgeSLOT() ));
 
-  m_rmsAction = new QAction( tr("Show true RMS value (AC only)"),
+  m_rmsAction = new Q3Action( tr("Show true RMS value (AC only)"),
                               tr("RMS (AC)"), 0, this );
-  m_frequencyAction = new QAction( tr("Show estimated frequency of measured signal"),
+  m_frequencyAction = new Q3Action( tr("Show estimated frequency of measured signal"),
                               tr("Estimated frequency"), 0, this );
   m_rmsAction->setToggleAction( true );
   m_frequencyAction->setToggleAction( true );
   
-  m_dotsAction = new QAction( tr("Display sample points (no interpolation)"),
+  m_dotsAction = new Q3Action( tr("Display sample points (no interpolation)"),
                               tr("Off"), 0, this );
-  m_linearAction = new QAction( tr("Linear interpolation"),
+  m_linearAction = new Q3Action( tr("Linear interpolation"),
                                 tr("Linear"), 0, this );
-  m_linearAvAction = new QAction( tr("Linear interpolation (averaged)"),
+  m_linearAvAction = new Q3Action( tr("Linear interpolation (averaged)"),
                                 tr("Linear Averaged"), 0, this );
-  m_sinxAction = new QAction( tr("Sin(x)/x interpolation"),
+  m_sinxAction = new Q3Action( tr("Sin(x)/x interpolation"),
                               tr("Sin(x)/x"), 0, this );
   m_dotsAction->setToggleAction( true );
   m_linearAction->setToggleAction( true );
@@ -208,40 +209,40 @@ MainWindow::createActions()
   connect( m_sinxAction, SIGNAL( activated() ),
            this, SLOT( interpolationSLOT() ));
   
-  m_timeMarkerAction = new QAction( tr("Show time marker"),
+  m_timeMarkerAction = new Q3Action( tr("Show time marker"),
                                     tr("Time marker"), 0, this );
-  m_freqMarkerAction = new QAction( tr("Show frequency marker"),
+  m_freqMarkerAction = new Q3Action( tr("Show frequency marker"),
                                     tr("Frequency marker"), 0, this );
-  m_amplitudeMarkerAction = new QAction( tr("Show amplitude marker"),
+  m_amplitudeMarkerAction = new Q3Action( tr("Show amplitude marker"),
                                          tr("Amplitude marker"), 0, this );
   m_timeMarkerAction->setToggleAction( true );
   m_freqMarkerAction->setToggleAction( true );
   m_amplitudeMarkerAction->setToggleAction( true );
   
-  m_showCh1Action = new QAction( tr("Show channel 1"),
+  m_showCh1Action = new Q3Action( tr("Show channel 1"),
                                  tr("Show"), 0, this );
-  m_showCh2Action = new QAction( tr("Show channel 2"),
+  m_showCh2Action = new Q3Action( tr("Show channel 2"),
                                  tr("Show"), 0, this );
   m_showCh1Action->setToggleAction( true );
   m_showCh2Action->setToggleAction( true );
 
-  m_voltsCh1Action[0] = new QAction( tr("Set channel 1 to 5V / division"),
+  m_voltsCh1Action[0] = new Q3Action( tr("Set channel 1 to 5V / division"),
                                      tr("5V / div"), 0, this );
-  m_voltsCh1Action[1] = new QAction( tr("Set channel 1 to 2V / division"),
+  m_voltsCh1Action[1] = new Q3Action( tr("Set channel 1 to 2V / division"),
                                      tr("2V / div"), 0, this );
-  m_voltsCh1Action[2] = new QAction( tr("Set channel 1 to 1V / division"),
+  m_voltsCh1Action[2] = new Q3Action( tr("Set channel 1 to 1V / division"),
                                      tr("1V / div"), 0, this );
-  m_voltsCh1Action[3] = new QAction( tr("Set channel 1 to 0.5V / division"),
+  m_voltsCh1Action[3] = new Q3Action( tr("Set channel 1 to 0.5V / division"),
                                      tr("0.5V / div"), 0, this );
-  m_voltsCh1Action[4] = new QAction( tr("Set channel 1 to 0.2V / division"),
+  m_voltsCh1Action[4] = new Q3Action( tr("Set channel 1 to 0.2V / division"),
                                      tr("0.2V / div"), 0, this );
-  m_voltsCh1Action[5] = new QAction( tr("Set channel 1 to 0.1V / division"),
+  m_voltsCh1Action[5] = new Q3Action( tr("Set channel 1 to 0.1V / division"),
                                      tr("0.1V / div"), 0, this );
-  m_voltsCh1Action[6] = new QAction( tr("Set channel 1 to 10mV / division"),
+  m_voltsCh1Action[6] = new Q3Action( tr("Set channel 1 to 10mV / division"),
                                      tr("50mV / div"), 0, this );
-  m_voltsCh1Action[7] = new QAction( tr("Set channel 1 to 20mV / division"),
+  m_voltsCh1Action[7] = new Q3Action( tr("Set channel 1 to 20mV / division"),
                                      tr("20mV / div"), 0, this );
-  m_voltsCh1Action[8] = new QAction( tr("Set channel 1 to 10mV / division"),
+  m_voltsCh1Action[8] = new Q3Action( tr("Set channel 1 to 10mV / division"),
                                      tr("10mV / div"), 0, this );
   for (int i=0; i<9; ++i)
   {
@@ -250,23 +251,23 @@ MainWindow::createActions()
              this, SLOT( voltsCh1SLOT() ));
   }
   
-  m_voltsCh2Action[0] = new QAction( tr("Set channel 1 to 5V / division"),
+  m_voltsCh2Action[0] = new Q3Action( tr("Set channel 1 to 5V / division"),
                                      tr("5V / div"), 0, this );
-  m_voltsCh2Action[1] = new QAction( tr("Set channel 1 to 2V / division"),
+  m_voltsCh2Action[1] = new Q3Action( tr("Set channel 1 to 2V / division"),
                                      tr("2V / div"), 0, this );
-  m_voltsCh2Action[2] = new QAction( tr("Set channel 1 to 1V / division"),
+  m_voltsCh2Action[2] = new Q3Action( tr("Set channel 1 to 1V / division"),
                                      tr("1V / div"), 0, this );
-  m_voltsCh2Action[3] = new QAction( tr("Set channel 1 to 0.5V / division"),
+  m_voltsCh2Action[3] = new Q3Action( tr("Set channel 1 to 0.5V / division"),
                                      tr("0.5V / div"), 0, this );
-  m_voltsCh2Action[4] = new QAction( tr("Set channel 1 to 0.2V / division"),
+  m_voltsCh2Action[4] = new Q3Action( tr("Set channel 1 to 0.2V / division"),
                                      tr("0.2V / div"), 0, this );
-  m_voltsCh2Action[5] = new QAction( tr("Set channel 1 to 0.1V / division"),
+  m_voltsCh2Action[5] = new Q3Action( tr("Set channel 1 to 0.1V / division"),
                                      tr("0.1V / div"), 0, this );
-  m_voltsCh2Action[6] = new QAction( tr("Set channel 1 to 10mV / division"),
+  m_voltsCh2Action[6] = new Q3Action( tr("Set channel 1 to 10mV / division"),
                                      tr("50mV / div"), 0, this );
-  m_voltsCh2Action[7] = new QAction( tr("Set channel 1 to 20mV / division"),
+  m_voltsCh2Action[7] = new Q3Action( tr("Set channel 1 to 20mV / division"),
                                      tr("20mV / div"), 0, this );
-  m_voltsCh2Action[8] = new QAction( tr("Set channel 1 to 10mV / division"),
+  m_voltsCh2Action[8] = new Q3Action( tr("Set channel 1 to 10mV / division"),
                                      tr("10mV / div"), 0, this );
   for (int i=0; i<9; ++i)
   {
@@ -275,43 +276,43 @@ MainWindow::createActions()
              this, SLOT( voltsCh2SLOT() ));
   }
 
-  m_timebaseAction[0] = new QAction( tr("Set timebase to 100ms / division"),
+  m_timebaseAction[0] = new Q3Action( tr("Set timebase to 100ms / division"),
                                      tr("100ms / div"), 0, this );
-  m_timebaseAction[1] = new QAction( tr("Set timebase to 50ms / division"),
+  m_timebaseAction[1] = new Q3Action( tr("Set timebase to 50ms / division"),
                                      tr("50ms / div"), 0, this );
-  m_timebaseAction[2] = new QAction( tr("Set timebase to 20ms / division"),
+  m_timebaseAction[2] = new Q3Action( tr("Set timebase to 20ms / division"),
                                      tr("20ms / div"), 0, this );
-  m_timebaseAction[3] = new QAction( tr("Set timebase to 10ms / division"),
+  m_timebaseAction[3] = new Q3Action( tr("Set timebase to 10ms / division"),
                                      tr("10ms / div"), 0, this );
-  m_timebaseAction[4] = new QAction( tr("Set timebase to 5ms / division"),
+  m_timebaseAction[4] = new Q3Action( tr("Set timebase to 5ms / division"),
                                      tr("5ms / div"), 0, this );
-  m_timebaseAction[5] = new QAction( tr("Set timebase to 2ms / division"),
+  m_timebaseAction[5] = new Q3Action( tr("Set timebase to 2ms / division"),
                                      tr("2ms / div"), 0, this );
-  m_timebaseAction[6] = new QAction( tr("Set timebase to 1ms / division"),
+  m_timebaseAction[6] = new Q3Action( tr("Set timebase to 1ms / division"),
                                      tr("1ms / div"), 0, this );
-  m_timebaseAction[7] = new QAction( tr("Set timebase to 0.5ms / division"),
+  m_timebaseAction[7] = new Q3Action( tr("Set timebase to 0.5ms / division"),
                                      tr("0.5ms / div"), 0, this );
-  m_timebaseAction[8] = new QAction( tr("Set timebase to 0.2ms / division"),
+  m_timebaseAction[8] = new Q3Action( tr("Set timebase to 0.2ms / division"),
                                      tr("0.2ms / div"), 0, this );
-  m_timebaseAction[9] = new QAction( tr("Set timebase to 0.1ms / division"),
+  m_timebaseAction[9] = new Q3Action( tr("Set timebase to 0.1ms / division"),
                                      tr("0.1ms / div"), 0, this );
-  m_timebaseAction[10] = new QAction( tr("Set timebase to 50s / division"),
+  m_timebaseAction[10] = new Q3Action( tr("Set timebase to 50s / division"),
                                       tr("50s / div"), 0, this );
-  m_timebaseAction[11] = new QAction( tr("Set timebase to 20s / division"),
+  m_timebaseAction[11] = new Q3Action( tr("Set timebase to 20s / division"),
                                       tr("20s / div"), 0, this );
-  m_timebaseAction[12] = new QAction( tr("Set timebase to 10s / division"),
+  m_timebaseAction[12] = new Q3Action( tr("Set timebase to 10s / division"),
                                       tr("10s / div"), 0, this );
-  m_timebaseAction[13] = new QAction( tr("Set timebase to 5s / division"),
+  m_timebaseAction[13] = new Q3Action( tr("Set timebase to 5s / division"),
                                       tr("5s / div"), 0, this );
-  m_timebaseAction[14] = new QAction( tr("Set timebase to 2s / division"),
+  m_timebaseAction[14] = new Q3Action( tr("Set timebase to 2s / division"),
                                       tr("2s / div"), 0, this );
-  m_timebaseAction[15] = new QAction( tr("Set timebase to 1s / division"),
+  m_timebaseAction[15] = new Q3Action( tr("Set timebase to 1s / division"),
                                       tr("1s / div"), 0, this );
-  m_timebaseAction[16] = new QAction( tr("Set timebase to 0.5s / division"),
+  m_timebaseAction[16] = new Q3Action( tr("Set timebase to 0.5s / division"),
                                       tr("0.5s / div"), 0, this );
-  m_timebaseAction[17] = new QAction( tr("Set timebase to 0.2s / division"),
+  m_timebaseAction[17] = new Q3Action( tr("Set timebase to 0.2s / division"),
                                       tr("0.2s / div"), 0, this );
-  m_timebaseAction[18] = new QAction( tr("Set timebase to 0.1s / division"),
+  m_timebaseAction[18] = new Q3Action( tr("Set timebase to 0.1s / division"),
                                       tr("0.1s / div"), 0, this );
   for (int i=0; i<19; ++i)
   {
@@ -320,33 +321,33 @@ MainWindow::createActions()
              this, SLOT( timebaseSLOT() ));
   }
   
-  m_fftFreqAction[0] = new QAction( tr("800Hz FFT (sampling frequency 1.6kHz)"),
+  m_fftFreqAction[0] = new Q3Action( tr("800Hz FFT (sampling frequency 1.6kHz)"),
                                     tr("800Hz"), 0, this );
-  m_fftFreqAction[1] = new QAction( tr("1.6kHz FFT (sampling frequency 3.2kHz)"),
+  m_fftFreqAction[1] = new Q3Action( tr("1.6kHz FFT (sampling frequency 3.2kHz)"),
                                     tr("1.6kHz"), 0, this );
-  m_fftFreqAction[2] = new QAction( tr("4kHz FFT (sampling frequency 8kHz)"),
+  m_fftFreqAction[2] = new Q3Action( tr("4kHz FFT (sampling frequency 8kHz)"),
                                     tr("4kHz"), 0, this );
-  m_fftFreqAction[3] = new QAction( tr("8kHz FFT (sampling frequency 16kHz)"),
+  m_fftFreqAction[3] = new Q3Action( tr("8kHz FFT (sampling frequency 16kHz)"),
                                     tr("8kHz"), 0, this );
-  m_fftFreqAction[4] = new QAction( tr("16kHz FFT (sampling frequency 32kHz)"),
+  m_fftFreqAction[4] = new Q3Action( tr("16kHz FFT (sampling frequency 32kHz)"),
                                     tr("16kHz"), 0, this );
-  m_fftFreqAction[5] = new QAction( tr("40kHz FFT (sampling frequency 80kHz)"),
+  m_fftFreqAction[5] = new Q3Action( tr("40kHz FFT (sampling frequency 80kHz)"),
                                     tr("40kHz"), 0, this );
-  m_fftFreqAction[6] = new QAction( tr("80kHz FFT (sampling frequency 160kHz)"),
+  m_fftFreqAction[6] = new Q3Action( tr("80kHz FFT (sampling frequency 160kHz)"),
                                     tr("80kHz"), 0, this );
-  m_fftFreqAction[7] = new QAction( tr("160kHz FFT (sampling frequency 32�Hz)"),
+  m_fftFreqAction[7] = new Q3Action( tr("160kHz FFT (sampling frequency 32�Hz)"),
                                     tr("160kHz"), 0, this );
-  m_fftFreqAction[8] = new QAction( tr("0.4MHz FFT (sampling frequency 0.8MHz)"),
+  m_fftFreqAction[8] = new Q3Action( tr("0.4MHz FFT (sampling frequency 0.8MHz)"),
                                     tr("0.4MHz"), 0, this );
-  m_fftFreqAction[9] = new QAction( tr("0.8MHz FFT (sampling frequency 1.6MHz)"),
+  m_fftFreqAction[9] = new Q3Action( tr("0.8MHz FFT (sampling frequency 1.6MHz)"),
                                     tr("0.8Mz"), 0, this );
-  m_fftFreqAction[10] = new QAction( tr("1.6MHz FFT (sampling frequency 3.2MHz)"),
+  m_fftFreqAction[10] = new Q3Action( tr("1.6MHz FFT (sampling frequency 3.2MHz)"),
                                      tr("1.6Mz"), 0, this );
-  m_fftFreqAction[11] = new QAction( tr("4MHz FFT (sampling frequency 8MHz)"),
+  m_fftFreqAction[11] = new Q3Action( tr("4MHz FFT (sampling frequency 8MHz)"),
                                      tr("4Mz"), 0, this );
-  m_fftFreqAction[12] = new QAction( tr("8MHz FFT (sampling frequency 16MHz)"),
+  m_fftFreqAction[12] = new Q3Action( tr("8MHz FFT (sampling frequency 16MHz)"),
                                      tr("8Mz"), 0, this );
-  m_fftFreqAction[13] = new QAction( tr("16MHz FFT (sampling frequency 32MHz)"),
+  m_fftFreqAction[13] = new Q3Action( tr("16MHz FFT (sampling frequency 32MHz)"),
                                      tr("16Mz"), 0, this );
   for (int i=0; i<14; ++i)
   {
@@ -355,20 +356,20 @@ MainWindow::createActions()
              this, SLOT( fftFreqSLOT() ));
   }
   
-  m_dcOffsetAction = new QAction( tr("Capture zero offset (For FFT). Ground input and adjust offset befor calling this."),
+  m_dcOffsetAction = new Q3Action( tr("Capture zero offset (For FFT). Ground input and adjust offset befor calling this."),
                                   tr("Zero offset"), 0, this );
-  m_histogrammAction = new QAction( tr("Converter Histogramm. Apply sinewave to input when using this."),
+  m_histogrammAction = new Q3Action( tr("Converter Histogramm. Apply sinewave to input when using this."),
                                    tr("Converter Histogramm..."), 0, this );
   connect( m_histogrammAction, SIGNAL( activated() ),
            m_mainWid, SLOT( histogramSLOT() ));
   connect( m_dcOffsetAction, SIGNAL( activated() ),
            m_mainWid, SLOT( dcOffsetSLOT() ));
   
-  m_whatsThisAction = new QAction( tr("Direct help. Click on any item on the screen to get a short help text."),
-                                  tr("What's this?"), Key_F1, this );
+  m_whatsThisAction = new Q3Action( tr("Direct help. Click on any item on the screen to get a short help text."),
+                                  tr("What's this?"), Qt::Key_F1, this );
   connect( m_whatsThisAction, SIGNAL( activated() ),
            this, SLOT( whatsThisSLOT() ));
-  m_copyrightAction = new QAction( tr("Show copyright information."),
+  m_copyrightAction = new Q3Action( tr("Show copyright information."),
                                    tr("About QtDSO..."), 0, this );
   connect( m_copyrightAction, SIGNAL( activated() ),
            this, SLOT( copyrightSLOT() ));
@@ -377,7 +378,7 @@ MainWindow::createActions()
 void
 MainWindow::createMenu()
 {
-  QPopupMenu *popup = new QPopupMenu( menuBar() );
+  Q3PopupMenu *popup = new Q3PopupMenu( menuBar() );
   m_exportPngAction->addTo( popup );
   m_exportEpsAction->addTo( popup );
   //m_exportDataAction->addTo( popup );
@@ -506,7 +507,7 @@ MainWindow::createMenu()
   
   menuBar()->insertItem( tr("&Display"), m_displayPopup );
 */  
-  popup = new QPopupMenu( menuBar() );
+  popup = new Q3PopupMenu( menuBar() );
   m_dcOffsetAction->addTo( popup );
   m_histogrammAction->addTo( popup );
   popup->insertSeparator();
@@ -517,7 +518,7 @@ MainWindow::createMenu()
   
   menuBar()->insertSeparator();
   
-  popup = new QPopupMenu( menuBar() );
+  popup = new Q3PopupMenu( menuBar() );
   m_whatsThisAction->addTo( popup );
   m_copyrightAction->addTo( popup );
   
@@ -620,7 +621,7 @@ MainWindow::sampleModeSLOT()
 void
 MainWindow::whatsThisSLOT()
 {
-  QWhatsThis::enterWhatsThisMode();
+  Q3WhatsThis::enterWhatsThisMode();
 }
   
 void
@@ -680,7 +681,7 @@ MainWindow::exportPngSLOT()
   img = img.convertDepth( 8, Qt::ThresholdDither | Qt::AvoidDither );
    
   QString filename = 
-      QFileDialog::getSaveFileName( exportDir,
+      Q3FileDialog::getSaveFileName( exportDir,
                                     "Images (*.png)",
                                     this, 0, tr("Save PNG image") );
   

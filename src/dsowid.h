@@ -23,6 +23,12 @@
 
 #include <qwidget.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QTimerEvent>
+#include <Q3PointArray>
+#include <QResizeEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 #include <type.h>
 
 #include <fftw3.h>
@@ -249,9 +255,9 @@ protected:
   int            m_fftOutAvCounter[2];
   fftw_complex  *m_fftwIn;
   fftw_complex  *m_fftwOut;
-  QPointArray   *m_arr;
-  QPointArray   *m_arr2;
-  QPointArray   *m_arr3;
+  Q3PointArray   *m_arr;
+  Q3PointArray   *m_arr2;
+  Q3PointArray   *m_arr3;
   int            m_timeMarker[3];
   int            m_freqMarker;
   int            m_amplitudeMarker[2];
@@ -307,7 +313,7 @@ protected:
   bool           m_hasData;
   bool           m_invCh[3];
   bool           m_absCh[3];
-  ButtonState    m_mouseButton;
+  Qt::ButtonState    m_mouseButton;
   int            m_updateTime;
   int            m_comeAgainTimer;
   int            m_realFrameRate;

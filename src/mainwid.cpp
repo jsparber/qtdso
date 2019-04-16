@@ -18,14 +18,14 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcombobox.h>
 #include <qfile.h>
 #include <qscrollbar.h>
 #include <qslider.h>
 #include <qspinbox.h>
 #include <qstringlist.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qtoolbutton.h>
 #include <qlabel.h>
 
@@ -36,6 +36,7 @@
 #include <dsowid.h>
 #include <mainwid.h>
 #include <buttongrid.h>
+#include <uimainwid.h>
 
 #include <iostream>
 

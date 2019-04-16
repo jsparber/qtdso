@@ -21,11 +21,11 @@
 #ifndef BUTTONGRID_HH
 #define BUTTONGRID_HH
 
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
-class QGrid;
+class Q3Grid;
 
-class ButtonGrid : public QButtonGroup
+class ButtonGrid : public Q3ButtonGroup
 {
   Q_OBJECT
 public:
@@ -40,7 +40,7 @@ protected slots:
   void clickedSLOT( int );
 
 protected:
-  QGrid       *m_grid;
+  Q3Grid       *m_grid;
   int          m_maxId;
   QColorGroup  m_darkCg;
   QColorGroup  m_cg;

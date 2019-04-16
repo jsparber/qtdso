@@ -18,26 +18,29 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#include <qgrid.h>
+#include <q3grid.h>
 #include <qtoolbutton.h>
 #include <qlayout.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <Q3HBoxLayout>
 
 #include <buttongrid.h>
 
 ButtonGrid::ButtonGrid( QWidget *parent, const char *name ) :
-  QButtonGroup( parent, name ),
+  Q3ButtonGroup( parent, name ),
   m_maxId( 0 )
 {
-  QHBoxLayout *hl = new QHBoxLayout( this );
+  Q3HBoxLayout *hl = new Q3HBoxLayout( this );
   hl->setAutoAdd( true );
   
-  m_grid = new QGrid( 3, this );
+  m_grid = new Q3Grid( 3, this );
   
   //hl->addWidget( m_grid );
   
   setMargin( 0 );
-  setFrameStyle( QFrame::NoFrame );
+  setFrameStyle( Q3Frame::NoFrame );
   
   setExclusive( true );
   
@@ -86,7 +89,7 @@ ButtonGrid::clear()
 {
   for (int i=0; i<=m_maxId; ++i)
   {
-    QButton *button = find(i);
+    QAbstractButton *button = find(i);
     
     if (button)
     {
@@ -103,14 +106,14 @@ ButtonGrid::clear()
   //
   delete m_grid;
   
-  m_grid = new QGrid( 3, this );
+  m_grid = new Q3Grid( 3, this );
   m_grid->show();
 }
 
 void
 ButtonGrid::setButton( int id )
 {
-  QButtonGroup::setButton( id );
+  Q3ButtonGroup::setButton( id );
   clickedSLOT( id );
 }
 
@@ -122,7 +125,7 @@ ButtonGrid::clickedSLOT( int id )
   
   for (int i=0; i<=m_maxId; ++i)
   {
-    QButton *button = find( i );
+    QAbstractButton*button = find( i );
     
     if (button && !m_ownColor[i])
     {
@@ -132,7 +135,7 @@ ButtonGrid::clickedSLOT( int id )
   
   if (!m_ownColor[id])
   {
-    QButton *button=find( id );
+    QAbstractButton*button=find( id );
     button->setPalette( QPalette( m_darkCg, m_darkCg, m_darkCg ) );
   }
 }

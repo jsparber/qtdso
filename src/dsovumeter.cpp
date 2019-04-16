@@ -19,6 +19,8 @@
 //======================================================================
 
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <dsowid.h>
 #include <dsovumeter.h>
 #include <qpixmap.h>
@@ -41,7 +43,7 @@ DsoVuMeter::DsoVuMeter( int channel, int maxValue,
   m_min( 127 ),
   m_max( 127 )
 {
-  setBackgroundMode( QWidget::NoBackground );
+  setBackgroundMode( Qt::NoBackground );
 }
 
 DsoVuMeter::~DsoVuMeter()
@@ -68,7 +70,7 @@ DsoVuMeter::paintEvent( QPaintEvent */*ev*/ )
   
   if ((0 == m_min || m_maxValue == m_max) && isEnabled())
   {
-    p.fillRect( 0, 0, width(), height(), Qt::red.light() );
+    p.fillRect( 0, 0, width(), height(), Qt::red);
   }
   else
   {

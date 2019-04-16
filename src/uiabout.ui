@@ -114,9 +114,6 @@ QtDSO is licensed under GPL.&lt;p&gt;
 &amp;copy;2002-2007 Matthias Toussaint&lt;br&gt;
 &lt;font color=blue&gt;&lt;u&gt;qtdso@mtoussaint.de&lt;/u&gt;&lt;/font&gt;</string>
                     </property>
-                    <property name="alignment">
-                        <set>WordBreak|AlignTop</set>
-                    </property>
                 </widget>
             </hbox>
         </widget>
